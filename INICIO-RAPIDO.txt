@@ -1,0 +1,96 @@
+================================================================================
+🎸 INTERBAIRROS - INÍCIO RÁPIDO
+================================================================================
+
+PARA COLOCAR O SITE NO AR EM 5 MINUTOS:
+
+1. INSTALAR NODE.JS
+   Download: https://nodejs.org/
+   Escolha a versão LTS (recomendada)
+
+2. INSTALAR DEPENDÊNCIAS
+   Abra o terminal nesta pasta e digite:
+   
+   npm install
+
+3. FAZER BUILD
+   
+   npm run build
+
+4. DEPLOY NO VERCEL (GRATUITO)
+   
+   npm install -g vercel
+   vercel
+
+   OU arraste a pasta "dist" em: https://vercel.com
+
+5. PRONTO! SEU SITE ESTÁ NO AR! 🎉
+
+================================================================================
+ACESSO AO PAINEL ADMINISTRATIVO:
+================================================================================
+
+URL: seusite.com/admin
+Senha padrão: admin123
+
+⚠️ IMPORTANTE: Altere a senha antes de publicar!
+Arquivo: /src/app/pages/admin-panel.tsx (linha 35)
+
+================================================================================
+DOCUMENTAÇÃO COMPLETA:
+================================================================================
+
+📖 GUIA-COMPLETO.md       - Tudo em um só lugar
+📖 DEPLOY-RAPIDO.md       - Deploy em 5 minutos
+📖 INSTALACAO.md          - Guia detalhado completo
+📖 SUPABASE-SETUP.md      - Banco de dados PostgreSQL
+📖 README.md              - Visão geral do projeto
+
+================================================================================
+PRECISA DE AJUDA?
+================================================================================
+
+Problema             | Solução
+---------------------|-------------------------------------------------------
+Site em branco       | Limpe o cache (Ctrl+Shift+R) e verifique .htaccess
+/admin não funciona  | Configure redirects na hospedagem
+Músicas não tocam    | Verifique se a URL é HTTPS e válida
+Build falha          | Verifique versão do Node.js (deve ser 18+)
+
+================================================================================
+ESTRUTURA DE PASTAS:
+================================================================================
+
+/src/app/pages/          - Páginas (home.tsx, admin-panel.tsx)
+/src/app/components/     - Componentes (player, galeria)
+/src/app/context/        - Estado global (músicas, configurações)
+/src/styles/             - Estilos CSS (theme.css para cores)
+
+================================================================================
+COMANDOS ÚTEIS:
+================================================================================
+
+npm run dev        - Rodar localmente (http://localhost:5173)
+npm run build      - Gerar arquivos para produção (pasta dist/)
+npm run preview    - Testar build localmente
+npm run clean      - Limpar cache e builds
+npm run fresh      - Limpar tudo e rebuildar
+
+================================================================================
+PRÓXIMOS PASSOS:
+================================================================================
+
+1. ✅ Fazer deploy
+2. ✅ Alterar senha do admin
+3. ✅ Adicionar músicas, fotos e shows pelo painel /admin
+4. ✅ Configurar links das redes sociais
+5. ✅ Editar biografia da banda
+
+OPCIONAL:
+- Registrar domínio próprio (registro.br, Hostinger)
+- Configurar banco de dados Supabase (veja SUPABASE-SETUP.md)
+- Hospedar arquivos MP3 no Cloudinary ou Supabase Storage
+
+================================================================================
+🎸 ROCK QUE ELETRIFICA A ALMA! 🎸
+================================================================================

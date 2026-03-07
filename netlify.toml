@@ -1,0 +1,42 @@
+# INTERBAIRROS - Configuração Netlify
+# Use este arquivo se for fazer deploy no Netlify
+
+[build]
+  # Comando para fazer build do projeto
+  command = "npm run build"
+  
+  # Pasta com arquivos gerados
+  publish = "dist"
+
+# Redirecionamento para SPA (Single Page Application)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de segurança e cache
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Configurações de Node.js
+[build.environment]
+  NODE_VERSION = "18"
