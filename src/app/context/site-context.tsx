@@ -27,17 +27,24 @@ interface BandInfo {
   imageUrl: string;
 }
 
+interface SiteSettings {
+  whatsappNumber: string;
+  bannerUrl: string;
+}
+
 interface SiteContextType {
   shows: Show[];
   images: GalleryImage[];
   socialLinks: SocialLinks;
   bandInfo: BandInfo;
+  siteSettings: SiteSettings;
   addShow: (show: Omit<Show, 'id'>) => void;
   deleteShow: (id: string) => void;
   addImage: (image: Omit<GalleryImage, 'id'>) => void;
   deleteImage: (id: string) => void;
   updateSocialLinks: (links: SocialLinks) => void;
   updateBandInfo: (info: BandInfo) => void;
+  updateSiteSettings: (settings: SiteSettings) => void;
 }
 
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
@@ -72,6 +79,11 @@ const defaultBandInfo: BandInfo = {
   imageUrl: 'https://images.unsplash.com/photo-1762917903361-99e0164dbcc5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYW5kJTIwbXVzaWNpYW4lMjBndWl0YXIlMjBwZXJmb3JtYW5jZXxlbnwxfHx8fDE3NzI4Mjk3NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080',
 };
 
+const defaultSiteSettings: SiteSettings = {
+  whatsappNumber: '+5511999999999',
+  bannerUrl: 'https://images.unsplash.com/photo-1534050055340-71c7fa612a99?w=1080',
+};
+
 export function SiteProvider({ children }: { children: ReactNode }) {
   const [shows, setShows] = useState<Show[]>(() => {
     const saved = localStorage.getItem('interbairros_shows');
@@ -93,6 +105,11 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     return saved ? JSON.parse(saved) : defaultBandInfo;
   });
 
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
+    const saved = localStorage.getItem('interbairros_settings');
+    return saved ? JSON.parse(saved) : defaultSiteSettings;
+  });
+
   useEffect(() => {
     localStorage.setItem('interbairros_shows', JSON.stringify(shows));
   }, [shows]);
@@ -108,6 +125,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('interbairros_band', JSON.stringify(bandInfo));
   }, [bandInfo]);
+
+  useEffect(() => {
+    localStorage.setItem('interbairros_settings', JSON.stringify(siteSettings));
+  }, [siteSettings]);
 
   const addShow = (show: Omit<Show, 'id'>) => {
     const newShow: Show = {
@@ -141,18 +162,24 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     setBandInfo(info);
   };
 
+  const updateSiteSettings = (settings: SiteSettings) => {
+    setSiteSettings(settings);
+  };
+
   return (
     <SiteContext.Provider value={{
       shows,
       images,
       socialLinks,
       bandInfo,
+      siteSettings,
       addShow,
       deleteShow,
       addImage,
       deleteImage,
       updateSocialLinks,
       updateBandInfo,
+      updateSiteSettings,
     }}>
       {children}
     </SiteContext.Provider>

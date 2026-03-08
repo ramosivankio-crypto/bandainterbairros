@@ -1,5 +1,6 @@
 import { AudioPlayer } from "../components/audio-player";
 import { Gallery } from "../components/gallery";
+import { WhatsAppButton } from "../components/whatsapp-button";
 import {
   Music2,
   Calendar,
@@ -13,15 +14,18 @@ import { Link } from "react-router";
 import { useSite } from "../context/site-context";
 
 export function Home() {
-  const { shows, socialLinks, bandInfo } = useSite();
+  const { shows, socialLinks, bandInfo, siteSettings } = useSite();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-black text-white">
+      {/* WhatsApp Floating Button */}
+      <WhatsAppButton />
+      
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1684679106461-dae134df8da6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyb2NrJTIwYmFuZCUyMGNvbmNlcnQlMjBzdGFnZXxlbnwxfHx8fDE3NzI3NTkwODF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            src={siteSettings.bannerUrl}
             alt="Banda ao vivo"
             className="w-full h-full object-cover"
           />

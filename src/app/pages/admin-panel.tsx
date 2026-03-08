@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { ArrowLeft, Plus, Trash2, Calendar, Image as ImageIcon, Save, Music, Share2, Info } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Calendar, Image as ImageIcon, Save, Music, Share2, Info, Settings2 } from 'lucide-react';
 import { useMusic } from '../context/music-context';
 import { useSite, type Show, type GalleryImage } from '../context/site-context';
 
 export function AdminPanel() {
   const navigate = useNavigate();
   const { tracks, addTrack, deleteTrack } = useMusic();
-  const { shows, images, socialLinks, bandInfo, addShow, deleteShow, addImage, deleteImage, updateSocialLinks, updateBandInfo } = useSite();
-  const [activeTab, setActiveTab] = useState<'shows' | 'gallery' | 'music' | 'social' | 'band'>('shows');
+  const { shows, images, socialLinks, bandInfo, siteSettings, addShow, deleteShow, addImage, deleteImage, updateSocialLinks, updateBandInfo, updateSiteSettings } = useSite();
+  const [activeTab, setActiveTab] = useState<'shows' | 'gallery' | 'music' | 'social' | 'band' | 'settings'>('shows');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
 
@@ -18,6 +18,7 @@ export function AdminPanel() {
   const [musicForm, setMusicForm] = useState({ title: '', duration: '', url: '' });
   const [socialForm, setSocialForm] = useState(socialLinks);
   const [bandForm, setBandForm] = useState(bandInfo);
+  const [settingsForm, setSettingsForm] = useState(siteSettings);
 
   // Update forms when context changes
   useEffect(() => {
@@ -28,9 +29,13 @@ export function AdminPanel() {
     setBandForm(bandInfo);
   }, [bandInfo]);
 
+  useEffect(() => {
+    setSettingsForm(siteSettings);
+  }, [siteSettings]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
+    if (password === 'felipe2015') {
       setIsAuthenticated(true);
     } else {
       alert('Senha incorreta!');
@@ -67,6 +72,12 @@ export function AdminPanel() {
     alert('Informações atualizadas com sucesso!');
   };
 
+  const handleUpdateSettings = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateSiteSettings(settingsForm);
+    alert('Configurações atualizadas com sucesso!');
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-black text-white flex items-center justify-center p-4">
@@ -87,7 +98,7 @@ export function AdminPanel() {
               Entrar
             </button>
           </form>
-          <p className="mt-4 text-sm text-white/60 text-center">Senha padrão: admin123</p>
+          <p className="mt-4 text-sm text-white/60 text-center">Senha alterada pelo administrador</p>
           <button onClick={() => navigate('/')} className="mt-4 w-full px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center justify-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Site
@@ -121,6 +132,7 @@ export function AdminPanel() {
             { id: 'music', icon: Music, label: 'Músicas' },
             { id: 'social', icon: Share2, label: 'Redes Sociais' },
             { id: 'band', icon: Info, label: 'Sobre a Banda' },
+            { id: 'settings', icon: Settings2, label: 'Configurações' },
           ].map(tab => (
             <button
               key={tab.id}
@@ -303,6 +315,59 @@ export function AdminPanel() {
                 <button type="submit" className="w-full px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
                   <Save className="w-5 h-5" />
                   Salvar Informações
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
+              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Settings2 className="w-5 h-5" />
+                Configurações
+              </h2>
+              <form onSubmit={handleUpdateSettings} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Número do WhatsApp</label>
+                  <input 
+                    type="text" 
+                    value={settingsForm.whatsappNumber} 
+                    onChange={(e) => setSettingsForm({ ...settingsForm, whatsappNumber: e.target.value })} 
+                    className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-red-500" 
+                    placeholder="+5541999999999 (com código do país)" 
+                    required 
+                  />
+                  <p className="text-xs text-white/50 mt-1">Formato: +55 41 99999-9999 (inclua código do país)</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">URL da Imagem do Banner (Hero)</label>
+                  <input 
+                    type="url" 
+                    value={settingsForm.bannerUrl} 
+                    onChange={(e) => setSettingsForm({ ...settingsForm, bannerUrl: e.target.value })} 
+                    className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-red-500" 
+                    placeholder="https://exemplo.com/banner.jpg" 
+                    required 
+                  />
+                  <p className="text-xs text-white/50 mt-1">Imagem de fundo da seção principal (topo do site)</p>
+                </div>
+                {settingsForm.bannerUrl && (
+                  <div>
+                    <p className="text-sm text-white/70 mb-2">Preview do Banner:</p>
+                    <img 
+                      src={settingsForm.bannerUrl} 
+                      alt="Preview do Banner" 
+                      className="w-full h-64 object-cover rounded-lg" 
+                      onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/1200x600?text=Imagem+Inválida'; }} 
+                    />
+                  </div>
+                )}
+                <button type="submit" className="w-full px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+                  <Save className="w-5 h-5" />
+                  Salvar Configurações
                 </button>
               </form>
             </div>
